@@ -1,0 +1,4 @@
+tensorflow>=2.15,<2.20
+numpy>=1.24
+matplotlib>=3.7
+streamlit>=1.28
