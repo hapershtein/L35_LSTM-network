@@ -54,6 +54,81 @@ cd "c:\25D\L35_LSTM network"
 pip install -r requirements.txt
 ```
 
+## Setup and run from WSL
+
+Use this if you want to run TensorFlow/Streamlit inside WSL (recommended on Windows).
+
+1. Open Ubuntu (WSL) and go to the project mounted under `/mnt`:
+
+```bash
+cd "/mnt/c/25D/L35_LSTM network"
+```
+
+2. Create and activate a virtual environment:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+3. Run Streamlit:
+
+```bash
+streamlit run app.py
+```
+
+4. Open the URL shown in terminal from Windows (typically):
+
+- `http://localhost:8501`
+
+Optional: run with explicit host/port if needed:
+
+```bash
+streamlit run app.py --server.address 0.0.0.0 --server.port 8501
+```
+
+5. Run CLI training from WSL:
+
+```bash
+python train.py --seed 42 --epochs 40 --batch 64 --lstm-units 64 --window 50
+```
+
+### WSL troubleshooting
+
+- `python3 -m venv .venv` fails with `ensurepip`/`venv` error:
+  - Install venv package, then retry:
+  ```bash
+  sudo apt update
+  sudo apt install -y python3-venv
+  ```
+
+- `streamlit: command not found`:
+  - Ensure venv is active and reinstall:
+  ```bash
+  source .venv/bin/activate
+  pip install -r requirements.txt
+  ```
+
+- Browser cannot reach app on `localhost:8501`:
+  - Confirm Streamlit is running and bound correctly:
+  ```bash
+  streamlit run app.py --server.address 0.0.0.0 --server.port 8501
+  ```
+  - Check if another process already uses port 8501:
+  ```bash
+  ss -ltnp | rg 8501
+  ```
+  - If needed, switch to another port (for example 8502):
+  ```bash
+  streamlit run app.py --server.address 0.0.0.0 --server.port 8502
+  ```
+
+- TensorFlow is slow or no GPU in Windows:
+  - Native Windows TensorFlow commonly runs on CPU for this setup.
+  - WSL2 + Linux CUDA stack is the typical route for GPU acceleration.
+
 ## Run Streamlit UI
 
 ```powershell
